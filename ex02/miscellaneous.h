@@ -56,6 +56,8 @@ typedef enum POLYGON { HEXAGON = 6, HEPTAGON = 7, OCTAGON = 8 } POLYGON;
 #define MASK_COMMAND						0xFF
 #define MASK_POLYGON_POINT					0xFFFF
 #define MASK_ALL_TYPES						0xF
+#define MASK_NEW_POLYGON_OFF				0xFFFD
+#define PRINT_CURRENT_POLYGON_ONLY			0
 #define MASK_NEW_POLYGON(command)			(command >> 1) & 1
 #define MASK_POLYGON_TYPE(command)			((command >> 2)& MASK_TAKE_FIRST_FOUR)
 #define MASK_PRINT_TYPE(command)			((command >> 10) & MASK_COMMAND)

@@ -73,13 +73,15 @@ double calculate_distance(Vertex point_1, Vertex point_2) {
 
 int polygonEngine() {
 	long long command, vertex[2];
-	int keepTake = false, polygonsCounter = 0;
+	int polygonsCounter = 0;
 	Polygon current;
 	polygons = (GenericList)calloc(1, SIZE_OF_GENERIC_LIST);
 
-	while (!keepTake) {
-		fscanf(stdin,"%llx", &command);
-		keepTake = command & 1;
+	while (true) {
+		scanf("%llx", &command);
+		if (command == -1) {
+			break;
+		}
 		current = createPolygon((POLYGON)MASK_POLYGON_TYPE(command));
 		if (MASK_NEW_POLYGON(command)) {
 			polygonsCounter++;
@@ -123,9 +125,10 @@ Polygon createPolygon(POLYGON type) {
 
 Point createPoint(int pointBits) {
 	Point point = (Point)malloc(SIZE_OF_POINT);
+	char x = pointBits & MASK_COMMAND, y = (pointBits >> MOVE_TO_Y_POINT) & MASK_COMMAND;
 	if (point) {
-		point->x = pointBits & MASK_COMMAND;
-		point->y = (pointBits >> MOVE_TO_Y_POINT)& MASK_COMMAND;
+		point->x = x;
+		point->y = y;
 		return point;
 	}
 	return NULL;
