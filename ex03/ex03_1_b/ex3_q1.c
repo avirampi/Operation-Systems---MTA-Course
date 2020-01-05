@@ -17,6 +17,11 @@ void program(String argv[]) {
         exit(EXIT_FAILURE);
     }
 
+    if (program_num == 1) {
+        close(programs_pipes[0][PIPE_WRITE_END]);
+        programs_pipes[0][PIPE_WRITE_END] = open(argv[3], O_CREAT | O_RDWR, S_IWUSR | S_IRUSR);
+    }
+
     if (fork() == 0) {
         do_first(programs_pipes[0], argv[1][0], argv[2][0]);
     }
@@ -40,7 +45,7 @@ void program(String argv[]) {
         close(programs_pipes[program_index - 1][PIPE_READ_END]);
     }
     
-    if (fork() == 0) {
+    if (program_num > 1 && fork() == 0) {
         do_last_child(programs_pipes[(program_num > 1 ? program_num - 2 : 0)], argv[1][program_num - 1], argv[2][program_num - 1], argv[3]);
     }
     close(programs_pipes[(program_num > 1 ? program_num - 2 : 0)][PIPE_READ_END]);
