@@ -23,4 +23,5 @@ typedef char* String; // better readabilty
 void program(String argv[]);
 void do_child(int* pip_child, int *pip_prev, char first, char second);
 void do_last_child(int* pip_child, char first, char second, String file_name);
-void do_first(int* pip, char first, char second);
+void do_first_child(int* pip, char first, char second);
+void closePipeAndExecve(int *pip, char first, char second);
