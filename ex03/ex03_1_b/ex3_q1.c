@@ -84,7 +84,7 @@ void closePipeAndExecve(int *pip, char first, char second) {
 }
 
 void openPipe(int **pip_ptr) {
-    if (pipe(*pip_ptr[0]) == -1) {
+    if (pipe(*pip_ptr) == -1) {
         fprintf(stderr, ERROR_CANNOT_OPEN_PIPE);
         exit(EXIT_FAILURE);
     }
