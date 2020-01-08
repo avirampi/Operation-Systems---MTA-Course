@@ -31,8 +31,7 @@ typedef char* String;
 typedef worker* Producer;
 typedef worker* Consumer;
 
-#define DEBUG                                   if (false)
-
+#define CONSUMER_NAME_SIZE                      13
 #define MESSAGE_ALL_PRODUCERS_CREATED           "main thread created all producer threads\n"
 #define MESSAGE_ALL_CONSUMERS_CREATED           "main thread created all consumer threads\n"
 #define MESSAGE_ALL_PRODUCERS_FINISH            "all producers terminated\n"
@@ -53,9 +52,7 @@ typedef worker* Consumer;
 pthread_t creator;
 buffer program_buffer;
 
-pthread_cond_t  global_signal_buffer_free;       // == can produce more
 pthread_cond_t  global_signal_can_consume;
-
 pthread_mutex_t global_buffer_lock;
 
 sem_t *global_wait_fake;

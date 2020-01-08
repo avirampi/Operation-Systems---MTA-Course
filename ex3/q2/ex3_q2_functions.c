@@ -11,7 +11,6 @@ void program_start() {
     program_buffer.logical_size = BUF_SIZE;
 
     global_buffer_lock              = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
-    global_signal_buffer_free       = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
     global_signal_can_consume       = (pthread_cond_t)PTHREAD_COND_INITIALIZER;
 
     initializing_semaphores(true);
@@ -99,7 +98,11 @@ void *consumer_function(void *consumer_input) {
         
         if (multiply != 0) {
             if (find_two_factors(multiply, &number_a, &number_b) < 0) {
-                SEM_PRINT(printf(ERROR_FIND_TWO_FACTORS))
+                SEM_PRINT(fprintf(stderr, ERROR_FIND_TWO_FACTORS))
+            } else {
+                String consumer_name = (String)calloc(1, CONSUMER_NAME_SIZE + N_CONS);
+                sprintf(consumer_name, "consumer #%d:", consumer->system_id);
+                SEM_PRINT(write_product(consumer_name, number_a, number_b, multiply))
             }
         }
     }
@@ -114,13 +117,11 @@ void wait_for_starting() {
 }
 
 void add_to_buf(lluint number) {
-    program_buffer.bufferArray[program_buffer.physical_size] = number;
-    program_buffer.physical_size += 1;
+    program_buffer.bufferArray[program_buffer.physical_size++] = number;
 }
 
 void remove_from_buf(lluint* prod) {
-    program_buffer.physical_size -= 1;
-    *prod = program_buffer.bufferArray[program_buffer.physical_size];
+    *prod = program_buffer.bufferArray[--program_buffer.physical_size];
 }
 
 lluint get_prime_number() {
@@ -135,7 +136,7 @@ lluint get_prime_number() {
 void initializing_semaphores(bool with_creation) {
     for (int i = 0; i < SEM_ARRAY_SIZE; ++i) {
         if (sem_unlink(SEM_NAMES[i]) == 0) {
-		    DEBUG fprintf(stderr, "successul unlink of %s\n", SEM_NAMES[i]);
+		    fprintf(stderr, "successul unlink of %s\n", SEM_NAMES[i]);
         }
 
         if (with_creation) {

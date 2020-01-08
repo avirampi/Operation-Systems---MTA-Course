@@ -1,6 +1,6 @@
 # Makefile for ex3-q1 winter 2019A
 CFLAGS = -Wall
-CC = gcc -std=c99 -pthread -ggdb
+CC = gcc -std=c99
 
 OS := $(shell uname)
 ifneq (,$(findstring CYGWIN_NT,$(OS)))
@@ -11,7 +11,7 @@ endif
 
 PROG = ex3_q2$(EXT)
 
-all: $(PROG) #test
+all: $(PROG) test
 	
 $(PROG) : ex3_q2.o ex3_q2_functions.o ex3_q2_given.c
 	@echo -n compiling $@ ... 
